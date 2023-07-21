@@ -66,6 +66,8 @@ Now you can test the application using postman or any other API testing tools:
 If you don't know how to use postman then watch this video guide where I explain how to test this app with postman: Video Guide
 
 If you know how to use postman then use these endpoints and parameters available in the application:
+
+List of Endpoints
 ---
 | Endpoint                                         | Requirements                                                | Functionality                                                     |
 | ------------------------------------------------ | ----------------------------------------------------------- | ----------------------------------------------------------------- |
