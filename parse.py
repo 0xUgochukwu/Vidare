@@ -78,12 +78,6 @@ def parse_and_store_pitch_deck(document_id):
     return jsonify({'message': 'File parsed and information stored successfully'}), 200
 
 
-@parse_bp.route('/pitch_decks', methods=['GET'])
-def fetch_pitch_decks():
-    """ Endpoint to fetch all parsed pitch decks """
-    decks = get_PitchDecks()
-    return jsonify(decks)
-
 
 @parse_bp.route('/pitch_deck/<document_id>', methods=['GET'])
 def get_pitch_deck(document_id):
