@@ -1,8 +1,7 @@
 import os
 import datetime
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, current_app as app
 from werkzeug.utils import secure_filename
-from app import app
 from models import UploadedDocument, get_uploaded_documents
 
 

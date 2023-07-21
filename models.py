@@ -1,8 +1,7 @@
 import uuid
 from flask_sqlalchemy import SQLAlchemy
-from app import app
 
-db = SQLAlchemy(app)
+db = SQLAlchemy()
 
 
 class UploadedDocument(db.Model):
@@ -38,14 +37,14 @@ class PitchDeckInfo(db.Model):
     id = db.Column(db.String(36), primary_key=True)
     slide_title = db.Column(db.String(255))
     slide_content = db.Column(db.Text)
-    metadata = db.Column(db.Text)
+    deck_metadata = db.Column(db.Text)
     uploaded_document_id = db.Column(db.String(36), db.ForeignKey('uploaded_document.id'))
 
     def __init__(self, slide_title, slide_content, metadata, uploaded_document_id):
         self.id = str(uuid.uuid4())
         self.slide_title = slide_title
         self.slide_content = slide_content
-        self.metadata = metadata
+        self.deck_metadata = metadata
         self.uploaded_document_id = uploaded_document_id
 
     def save(self):

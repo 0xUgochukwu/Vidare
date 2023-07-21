@@ -1,8 +1,7 @@
 import os
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, current_app as app
 import PyPDF2
 from pptx import Presentation
-from app import app
 from models import PitchDeckInfo, UploadedDocument, get_PitchDecks
 parse_bp = Blueprint("parse", __name__)
 
@@ -22,7 +21,7 @@ def parse_and_store_pitch_deck(document_id):
                 page = pdf_reader.getPage(page_number)
                 slide_title = f"Slide {page_number + 1}"
                 slide_content = page.extractText()
-                metadata = pdf_reader.getDocumentInfo().author
+                metadata = pdf_reader.getDocumentInfo()
                 pitch_deck_info = PitchDeckInfo(slide_title, slide_content, metadata, document_id)
                 pitch_deck_info.save()
 
@@ -31,7 +30,7 @@ def parse_and_store_pitch_deck(document_id):
         for slide in prs.slides:
             slide_title = slide.shapes.title.text
             slide_content = '\n'.join([shape.text for shape in slide.shapes if hasattr(shape, "text")])
-            metadata = prs.core_properties.author
+            metadata = prs.core_properties
             pitch_deck_info = PitchDeckInfo(slide_title, slide_content, metadata, document_id)
             pitch_deck_info.save()
 
