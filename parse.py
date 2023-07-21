@@ -48,16 +48,34 @@ def extract_from_pdf(file_path, document_id):
 
 def extract_from_pptx(file_path, document_id):
     """ Data Extraction Logic for Power Point files using python-pptx """
-    prs = Presentation(file_path)
-    for slide in prs.slides:
-        slide_title = slide.shapes.title.text
-        slide_content = '\n'.join([shape.text for shape in slide.shapes if hasattr(shape, "text")])
-        metadata = json.dumps(prs.core_properties)
-        pitch_deck_info = PitchDeckInfo(slide_title, slide_content, metadata, document_id)
+
+    slide_data = []
+
+    presentation = Presentation(file_path)
+
+    for slide_number, slide in enumerate(presentation.slides):
+        slide_title = slide.shapes.title.text if slide.shapes.title and hasattr(slide.shapes.title, 'text') else f"Slide {slide_number + 1}"
+        slide_texts = [shape.text for shape in slide.shapes if shape.has_text_frame and hasattr(shape, 'text')]
+        slide_content = "\n".join(slide_texts)
+
+        slide_data.append({
+            'slide_title': slide_title,
+            'slide_content': slide_content
+        })
+
+    core_properties = presentation.core_properties
+    metadata = {
+        'author': core_properties.author,
+        'title': core_properties.title,
+        'subject': core_properties.subject,
+        'keywords': core_properties.keywords
+    }
+    metadata = json.dumps(metadata)
+
+    # Save slide data into the database
+    for slide in slide_data:
+        pitch_deck_info = PitchDeckInfo(slide['slide_title'], slide['slide_content'], metadata, document_id)
         pitch_deck_info.save()
-
-
-
 
 @parse_bp.route('/parse/<document_id>', methods=['GET'])
 def parse_and_store_pitch_deck(document_id):
