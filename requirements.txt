@@ -1,0 +1,4 @@
+Flask==2.0.1
+python-pptx==0.6.19
+PyPDF2==1.26.0
+SQLAlchemy==1.4.23
