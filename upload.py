@@ -18,6 +18,7 @@ def upload_pitch_deck():
         return jsonify({'error': 'No file part in the request'}), 400
 
     file = request.files['file']
+    title = request.form.get('title', '')
 
     if file.filename == '':
         return jsonify({'error': 'No selected file'}), 400
@@ -29,7 +30,7 @@ def upload_pitch_deck():
         file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename_with_timestamp))
 
         # Save information about the uploaded document in the database
-        uploaded_doc = UploadedDocument(file_path=filename_with_timestamp, title=filename)
+        uploaded_doc = UploadedDocument(file_path=filename_with_timestamp, title=title)
         uploaded_doc.save()
 
         return jsonify({'message': 'File uploaded successfully', 'document_id': uploaded_doc.id}), 200
