@@ -3,7 +3,6 @@
 <h3 align="center">Pitch Deck Parser<h3>
 
 > This repository contains a powerful and user-friendly Python-based backend solution for parsing uploaded pitch deck documents
->  and presenting the extracted content on a simple dashboard.
 >
 > The application is designed to handle popular formats like PDF and PowerPoint, extracting essential information such as
 > slide titles, content, and metadata.
